@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using ProductionAndStockERP.Data;
+using ProductionAndStockERP.Helpers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,17 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+JwtHelper._secretKey = jwtSettings["Key"];
+JwtHelper._issuer = jwtSettings["Issuer"];
+JwtHelper._audience = jwtSettings["Audience"];
+
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
