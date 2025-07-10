@@ -53,12 +53,12 @@ namespace ProductionAndStockERP.Services
             else
                 return ResponseHelper<bool>.Fail("Ürün Bulunamadı");
         }
-        public async Task<ResponseHelper<bool>> DeleteOrderAsync(Order order)
+        public async Task<ResponseHelper<bool>> DeleteOrderAsync(int id)
         {
-            var result = await _context.Orders.FindAsync(order.OrderId);
+            var result = await _context.Orders.FindAsync(id);
             if (result is not null)
             {
-                _context.Orders.Remove(order);
+                _context.Orders.Remove(result);
                 await _context.SaveChangesAsync();
                 return ResponseHelper<bool>.Ok(true);
             }

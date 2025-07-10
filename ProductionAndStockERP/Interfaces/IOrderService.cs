@@ -10,6 +10,6 @@ namespace ProductionAndStockERP.Interfaces
 
         Task<ResponseHelper<bool>> CreateOrderAsync(Order order);
         Task<ResponseHelper<bool>> UpdateOrderAsync(Order order);
-        Task<ResponseHelper<bool>> DeleteOrderAsync(Order order);
+        Task<ResponseHelper<bool>> DeleteOrderAsync(int id);
     }
 }
