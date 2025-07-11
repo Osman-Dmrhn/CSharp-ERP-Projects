@@ -167,3 +167,5 @@ C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStock
 C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\obj\Debug\net8.0\ProductionAndStockERP.pdb
 C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\obj\Debug\net8.0\ProductionAndStockERP.genruntimeconfig.cache
 C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\obj\Debug\net8.0\ref\ProductionAndStockERP.dll
+C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

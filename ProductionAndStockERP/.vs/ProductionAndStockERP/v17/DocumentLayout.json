@@ -3,12 +3,23 @@
   "WorkspaceRootPath": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\osman\\OneDrive\\Belgeler\\CorporateWebsite\\CorporateWebsite\\Core\\DependencyInjection\\ServiceRegistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\helpers\\serviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:helpers\\serviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -26,24 +37,71 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "ServiceRegistration.cs",
+              "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Belgeler\\CorporateWebsite\\CorporateWebsite\\Core\\DependencyInjection\\ServiceRegistration.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Belgeler\\CorporateWebsite\\CorporateWebsite\\Core\\DependencyInjection\\ServiceRegistration.cs",
+              "ToolTip": "C:\\Users\\osman\\OneDrive\\Belgeler\\CorporateWebsite\\CorporateWebsite\\Core\\DependencyInjection\\ServiceRegistration.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Belgeler\\CorporateWebsite\\CorporateWebsite\\Core\\DependencyInjection\\ServiceRegistration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:45:43.629Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAcAAAAAAAAAAAAvwBsAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:42:06.035Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ServiceRegistration.cs",
+              "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Helpers\\ServiceRegistration.cs",
+              "RelativeDocumentMoniker": "Helpers\\ServiceRegistration.cs",
+              "ToolTip": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Helpers\\ServiceRegistration.cs",
+              "RelativeToolTip": "Helpers\\ServiceRegistration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:38:05.76Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "Services\\UserService.cs",
               "ToolTip": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Services\\UserService.cs",
               "RelativeToolTip": "Services\\UserService.cs",
-              "ViewState": "AQIAADgAAAAAAAAAAAAwwE0AAAA1AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAE0AAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-11T14:37:09.269Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "UpdateUserPasswordDto.cs",
               "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Dtos\\UserDtos\\UpdateUserPasswordDto.cs",
               "RelativeDocumentMoniker": "Dtos\\UserDtos\\UpdateUserPasswordDto.cs",
@@ -51,12 +109,11 @@
               "RelativeToolTip": "Dtos\\UserDtos\\UpdateUserPasswordDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T14:34:30.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T14:34:30.634Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "IUserService.cs",
               "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Interfaces\\IUserService.cs",
               "RelativeDocumentMoniker": "Interfaces\\IUserService.cs",
@@ -64,26 +121,17 @@
               "RelativeToolTip": "Interfaces\\IUserService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T14:33:19.476Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+              "WhenOpened": "2025-07-11T14:33:19.476Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "UsersController.cs",
               "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
               "ToolTip": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Controllers\\UsersController.cs",
               "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFQAAAAiAAAA",
+              "ViewState": "AQIAAEsAAAAAAAAAAAAowFQAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-10T11:40:24.333Z",
               "EditorCaption": ""
