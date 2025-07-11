@@ -7,9 +7,9 @@ namespace ProductionAndStockERP.Helpers
 {
     public static class JwtHelper
     {
-        private static string _secretKey;
-        private static string _issuer;
-        private static string _audience;
+        public static string _secretKey;
+        public static string _issuer;
+        public static string _audience;
 
         public static string GenerateJwtToken(string userName, int userId)
         {

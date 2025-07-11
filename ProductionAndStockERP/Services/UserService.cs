@@ -29,9 +29,9 @@ namespace ProductionAndStockERP.Services
             return ResponseHelper<User>.Ok(result);
         }
 
-        public async Task<ResponseHelper<string>> VerificationUser(string userName, string passwordhash)
+        public async Task<ResponseHelper<string>> VerificationUser(string email, string passwordhash)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
             {
                 return ResponseHelper<string>.Fail("Kullanıcı Adı veya Şifre Hatalı");
@@ -40,7 +40,7 @@ namespace ProductionAndStockERP.Services
             {
                 return ResponseHelper<string>.Fail("Kullanıcı Adı veya Şifre Hatalı");
             }
-            var result = JwtHelper.GenerateJwtToken(userName, user.UserId);
+            var result = JwtHelper.GenerateJwtToken(user.UserName, user.UserId);
             return ResponseHelper<string>.Ok(result);
         }
 
@@ -71,6 +71,23 @@ namespace ProductionAndStockERP.Services
                 return ResponseHelper<bool>.Ok(true);
             }
             return ResponseHelper<bool>.Fail("Kullanıcı Bulunamadı");
+        }
+
+        public async Task<ResponseHelper<string>> UpdateUserPassword(int id, string oldpass, string newpass)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user is not null)
+            {
+                if (user.PasswordHash == oldpass)
+                {
+                    user.PasswordHash = newpass;
+                    _context.Users.Update(user);
+                    await _context.SaveChangesAsync();
+                    return ResponseHelper<string>.Ok("Şifre değiştirildi");
+                }
+                return ResponseHelper<string>.Fail("Eski şifre yanlış");
+            }
+            return ResponseHelper<string>.Fail("Kullanıcı bulunamadı");
         }
     }
 }
