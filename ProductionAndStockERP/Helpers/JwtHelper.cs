@@ -11,12 +11,13 @@ namespace ProductionAndStockERP.Helpers
         public static string _issuer;
         public static string _audience;
 
-        public static string GenerateJwtToken(string userName, int userId)
+        public static string GenerateJwtToken(string userName, int userId,string userRole)
         {
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Role, userRole)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));

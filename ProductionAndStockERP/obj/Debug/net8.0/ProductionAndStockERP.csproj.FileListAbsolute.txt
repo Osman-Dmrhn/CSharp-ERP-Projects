@@ -169,3 +169,5 @@ C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStock
 C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\obj\Debug\net8.0\ref\ProductionAndStockERP.dll
 C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\osman\OneDrive\Masaüstü\github\CSharp-ERP-Projects\ProductionAndStockERP\bin\Debug\net8.0\BCrypt.Net-Next.dll

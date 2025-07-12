@@ -98,7 +98,7 @@ namespace ProductionAndStockERP.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("getalluser")]
-        public async Task<IActionResult> GetAllUser(int id)
+        public async Task<IActionResult> GetAllUser()
         {
             var result = await _userService.GetAllUsers();
             return Ok(result);

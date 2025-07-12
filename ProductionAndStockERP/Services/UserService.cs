@@ -36,11 +36,11 @@ namespace ProductionAndStockERP.Services
             {
                 return ResponseHelper<string>.Fail("Kullanıcı Adı veya Şifre Hatalı");
             }
-            else if (user.PasswordHash!=passwordhash)
+            else if (!BCrypt.Net.BCrypt.Verify(passwordhash, user.PasswordHash))
             {
                 return ResponseHelper<string>.Fail("Kullanıcı Adı veya Şifre Hatalı");
             }
-            var result = JwtHelper.GenerateJwtToken(user.UserName, user.UserId);
+            var result = JwtHelper.GenerateJwtToken(user.UserName, user.UserId,user.Role);
             return ResponseHelper<string>.Ok(result);
         }
 
