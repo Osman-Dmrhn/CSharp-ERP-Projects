@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProductionAndStockERP.Dtos.OrderDtos;
 using ProductionAndStockERP.Dtos.ProductionOrder;
+using ProductionAndStockERP.Dtos.StockTransactionDtos;
 using ProductionAndStockERP.Dtos.UserDtos;
 using ProductionAndStockERP.Models;
 
@@ -21,6 +22,8 @@ namespace ProductionAndStockERP.Mappings
             CreateMap<ProductionOrderCreateDto,Order>().ReverseMap();
 
             CreateMap<ProductionOrderUpdateDto, ProductionOrder>().ReverseMap();
+
+            CreateMap<StockTransactionCreate, StockTransaction>().ReverseMap();
         }
     }
 }
