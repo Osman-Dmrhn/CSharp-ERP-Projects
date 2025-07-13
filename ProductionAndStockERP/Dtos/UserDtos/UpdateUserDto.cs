@@ -4,8 +4,6 @@ namespace ProductionAndStockERP.Dtos.UserDtos
 {
     public class UpdateUserDto
     {
-        [Required]
-        public int UserId {  get; set; }
 
         [Required(ErrorMessage = "Kullanıcı adı zorunludur.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Kullanıcı adı 3 ile 50 karakter arasında olmalıdır.")]

@@ -50,12 +50,12 @@ namespace ProductionAndStockERP.Controllers
         }
 
         [Authorize]
-        [HttpPost("updateuser")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto data)
+        [HttpPost("updateuser/{id}")]
+        public async Task<IActionResult> UpdateUser(int id,[FromBody] UpdateUserDto data)
         {
             if(!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            var user = await _userService.GetUserById(data.UserId);
+            var user = await _userService.GetUserById(id);
             if(user.Data != null) {
                 _mapper.Map(data, user.Data);
 
@@ -67,7 +67,7 @@ namespace ProductionAndStockERP.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost("deleteuser")]
+        [HttpPost("deleteuser/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var result = await _userService.DeleteUserAsync(id);
@@ -89,7 +89,7 @@ namespace ProductionAndStockERP.Controllers
 
         //GET İŞLEMLERİ
         [Authorize]
-        [HttpGet("getuserbyid")]
+        [HttpGet("getuserbyid/{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
             var result = await _userService.GetUserById(id);
