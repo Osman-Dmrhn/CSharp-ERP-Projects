@@ -1,23 +1,29 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductionAndStockERP.Dtos.ProductionOrder;
+using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Interfaces;
 using ProductionAndStockERP.Models;
+using ProductionAndStockERP.Services;
 using System.Security.Claims;
 
 namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin,Producer")]
     [Route("api/productionorders")]
     public class ProductionOrderController : ControllerBase
     {
         private readonly IProductionOrderService _productionOrderService;
         private readonly IMapper _mapper;
+        private readonly IActivityLogsService _activityLogsService;
 
-        public ProductionOrderController(IProductionOrderService productionOrderService, IMapper mapper)
+        public ProductionOrderController(IProductionOrderService productionOrderService, IMapper mapper, IActivityLogsService activityLogsService)
         {
             _productionOrderService = productionOrderService;
             _mapper = mapper;
+            _activityLogsService = activityLogsService;
         }
 
         [HttpGet("GetAllProductionOrders")]
@@ -42,15 +48,18 @@ namespace ProductionAndStockERP.Controllers
             productionOrder.Status= Status.Started;
             productionOrder.CreatedAt= DateTime.Now;
 
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (int.TryParse(userIdClaim, out int userId))
+            var userId = User.GetUserId();
+            if (userId is not null)
             {
-                productionOrder.CreatedBy = userId;
+                productionOrder.CreatedBy = userId.Value;
+                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Üretim Siparişi Oluşturdu.Üretim Siparişi:{productionOrder.ProductionId}");
             }
             else
             {
                 return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
             }
+
+
             var result =await _productionOrderService.CreatePrdouctionOrderAsync(productionOrder);
             return Ok(result);
         }
@@ -61,6 +70,16 @@ namespace ProductionAndStockERP.Controllers
             var productionorder = await _productionOrderService.GetPrdouctionOrderByIdAsync(id);
             if(productionorder.Data == null) {return Ok(productionorder);}
 
+            var userId = User.GetUserId();
+            if (userId is not null)
+            {
+                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Üretim Siparişini Güncelledi.Üretim Siparişi:{productionorder.Data.ProductionId}");
+            }
+            else
+            {
+                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
+            }
+
             productionorder.Data=_mapper.Map(newdata, productionorder.Data);
             var result = await _productionOrderService.UpdatePrdouctionOrderAsync(productionorder.Data);
             return Ok(result);
@@ -69,6 +88,17 @@ namespace ProductionAndStockERP.Controllers
         [HttpPost("deleteproductionorder/{id}")]
         public async Task<IActionResult> DeleteProductionOrder (int id)
         {
+            var userId = User.GetUserId();
+            if (userId is not null)
+            {
+                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Üretim Siparişini Sildi.Üretim Siparişi:{_productionOrderService.GetPrdouctionOrderByIdAsync(id)}");
+            }
+            else
+            {
+                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
+            }
+
+
             var result = await _productionOrderService.DeletePrdouctionOrderAsync(id);
             return Ok(result);
         }

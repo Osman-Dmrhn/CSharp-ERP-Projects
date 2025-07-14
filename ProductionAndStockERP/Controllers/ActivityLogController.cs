@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductionAndStockERP.Interfaces;
 
 namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
+    [Authorize(Roles ="Admin")]
     [Route("api/activitylog")]
     public class ActivityLogController : ControllerBase
     {
