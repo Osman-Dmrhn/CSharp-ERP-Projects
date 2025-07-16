@@ -7,6 +7,14 @@
       "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\dtos\\userdtos\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:dtos\\userdtos\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|c:\\users\\osman\\onedrive\\masa\u00FCst\u00FC\\github\\csharp-erp-projects\\productionandstockerp\\controllers\\stocktransacitoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{80F347D7-3730-445E-9A49-DD77E5FD7AB6}|ProductionAndStockERP.csproj|solutionrelative:controllers\\stocktransacitoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -26,11 +34,41 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LoginRequest.cs",
+              "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Dtos\\UserDtos\\LoginRequest.cs",
+              "RelativeDocumentMoniker": "Dtos\\UserDtos\\LoginRequest.cs",
+              "ToolTip": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Dtos\\UserDtos\\LoginRequest.cs",
+              "RelativeToolTip": "Dtos\\UserDtos\\LoginRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T05:48:46.375Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAADwAAAAAAAAAAAAAAE4AAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T05:43:06.839Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -40,14 +78,14 @@
               "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
               "ToolTip": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Controllers\\UsersController.cs",
               "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAABkAAAAYAAAA",
+              "ViewState": "AQIAABYAAAAAAAAAAAAQwB4AAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-14T12:53:13.668Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "StockTransacitonController.cs",
               "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Controllers\\StockTransacitonController.cs",
               "RelativeDocumentMoniker": "Controllers\\StockTransacitonController.cs",
@@ -55,12 +93,11 @@
               "RelativeToolTip": "Controllers\\StockTransacitonController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAC8AAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-14T12:50:08.477Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-14T12:50:08.477Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ProductionOrderController.cs",
               "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Controllers\\ProductionOrderController.cs",
               "RelativeDocumentMoniker": "Controllers\\ProductionOrderController.cs",
@@ -68,12 +105,11 @@
               "RelativeToolTip": "Controllers\\ProductionOrderController.cs",
               "ViewState": "AQIAACUAAAAAAAAAAAAIwDwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-14T12:46:27.938Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-14T12:46:27.938Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "OrderController.cs",
               "DocumentMoniker": "C:\\Users\\osman\\OneDrive\\Masa\u00FCst\u00FC\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\Controllers\\OrderController.cs",
               "RelativeDocumentMoniker": "Controllers\\OrderController.cs",
@@ -81,8 +117,7 @@
               "RelativeToolTip": "Controllers\\OrderController.cs",
               "ViewState": "AQIAAD0AAAAAAAAAAAAkwEgAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-14T12:38:47.155Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-14T12:38:47.155Z"
             }
           ]
         }

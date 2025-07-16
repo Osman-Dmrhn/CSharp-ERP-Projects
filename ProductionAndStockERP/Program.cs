@@ -22,6 +22,17 @@ JwtHelper._audience = jwtSettings["Audience"];
 
 builder.Services.AddSwaggerGenConfiguration();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("http://localhost:5173") // React'in çalýþtýðý URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,6 +76,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
