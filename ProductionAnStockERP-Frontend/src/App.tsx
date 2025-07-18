@@ -1,15 +1,25 @@
-import { useState } from 'react'
-import { Routes, Route,Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import LoginPage from './pages/LoginPage';
+import HomePage from "./pages/HomePage";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
    <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      
       <Route path='/login' element={<LoginPage/>}></Route>
+
+      <Route 
+          path="/" 
+          element={
+            <ProtectedRoute>
+              <HomePage/>
+            </ProtectedRoute>
+          } 
+        />
    </Routes>
   )
 }

@@ -1,6 +1,6 @@
 import api from './api';
-import type { UserLoginRequest } from '../models/UserLoginRequest';
-import type { ApiResponse } from '../models/apiResponse';
+import type { UserLoginRequest } from '../models/LoginDtos/UserLoginRequest';
+import type { ApiResponse } from '../models/ApiResponse';
 
 class AuthService {
   async login(requestData: UserLoginRequest): Promise<ApiResponse<string>> {

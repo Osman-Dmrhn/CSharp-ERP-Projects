@@ -17,10 +17,11 @@ namespace ProductionAndStockERP.Controllers
         private readonly IMapper _mapper;
         private readonly IActivityLogsService _activityLogsService;
 
-        public UsersController(IUserService userService,IMapper mapper)
+        public UsersController(IUserService userService,IMapper mapper,IActivityLogsService activityLogsService)
         {
             _userService = userService;
             _mapper = mapper;
+            _activityLogsService = activityLogsService;
         }
 
         //POST İŞLEMLERİ
@@ -32,6 +33,21 @@ namespace ProductionAndStockERP.Controllers
             return Ok(result);
         }
 
+        [HttpGet("me")]
+        public async Task<IActionResult> Me()
+        {
+            var userId = User.GetUserId();
+            var result = await _userService.GetUserById(userId.Value);
+            if (userId is not null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
+            }
+        }
+
 
         [Authorize(Roles ="Admin")]
         [HttpPost("createuser")]
@@ -39,10 +55,13 @@ namespace ProductionAndStockERP.Controllers
         {
             var newuser =  _mapper.Map<User>(data);
 
+            newuser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newuser.PasswordHash);
+
             var userId = User.GetUserId();
+
             if (userId is not null)
             {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Yeni Kullanıcı Ekledi.Kullanıcı:{newuser.UserId}");
+                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Yeni Kullanıcı Ekledi.Kullanıcı:{newuser}");
             }
             else
             {
