@@ -1,104 +1,91 @@
-﻿using AutoMapper;
+﻿// Dosya: Controllers/StockTransactionController.cs
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductionAndStockERP.Dtos.StockTransactionDtos;
 using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Interfaces;
 using ProductionAndStockERP.Models;
-using ProductionAndStockERP.Services;
+using System.Security.Claims;
 
 namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
     [Authorize(Roles = "Admin,Producer")]
     [Route("api/stocktransaction")]
-    public class StockTransacitonController : ControllerBase
+    public class StockTransactionController : ControllerBase // DÜZELTME: İsimdeki yazım hatası düzeltildi
     {
-        private  readonly IStockTransactionService _stockTransactionService;
+        private readonly IStockTransactionService _stockTransactionService;
         private readonly IMapper _mapper;
-        private readonly IActivityLogsService _activityLogsService;
 
-        public StockTransacitonController(IStockTransactionService stockTransactionService, IMapper mapper, IActivityLogsService activityLogsService)
+        public StockTransactionController(IStockTransactionService stockTransactionService, IMapper mapper)
         {
             _stockTransactionService = stockTransactionService;
             _mapper = mapper;
-            _activityLogsService = activityLogsService;
         }
 
-        [HttpGet("getallstocktransaction")]
-        public async Task<IActionResult> GetAllStockTransactions()
+        [HttpGet]
+        public async Task<IActionResult> GetAllStockTransactions([FromQuery] StockTransactionFilterParameters filters)
         {
-            var result = await _stockTransactionService.GetAllStockTransactionAsync();
-            return Ok(result);
+            var result = await _stockTransactionService.GetAllStockTransactionAsync(filters);
+            if (result.Success)
+            {
+                Response.AddPaginationHeader(result.Data.CurrentPage, result.Data.PageSize, result.Data.TotalCount, result.Data.TotalPages);
+                return Ok(result.Data.Items);
+            }
+            return BadRequest(result);
         }
 
-        [HttpGet("getstocktransaction/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetStockTransactionById(int id)
         {
             var result = await _stockTransactionService.GetStockTransactionByIdAsync(id);
+            if (!result.Success) return NotFound(result);
             return Ok(result);
         }
 
-        [HttpPost("createstocktransaction")]
-        public async Task<IActionResult> CreateStockTransaction([FromBody] StockTransactionCreate newdata)
+        [HttpPost]
+        public async Task<IActionResult> CreateStockTransaction([FromBody] StockTransactionCreate createDto)
         {
-            var stockTransaction =_mapper.Map<StockTransaction>(newdata);
-            stockTransaction.CreatedAt= DateTime.Now;
-
             var userId = User.GetUserId();
-            if (userId is not null)
-            {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Stok Hareketi Ekledi.Stok Hareketi:{stockTransaction.StockTxnId}");
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
+            if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
 
+            var stockTransaction = _mapper.Map<StockTransaction>(createDto);
+            stockTransaction.CreatedAt = DateTime.UtcNow;
 
-            var result = await _stockTransactionService.CreateStockTransactionAsync(stockTransaction);
+            var result = await _stockTransactionService.CreateStockTransactionAsync(stockTransaction, userId.Value);
+
+            if (!result.Success) return BadRequest(result);
             return Ok(result);
         }
 
-        [HttpPost("updatestocktransaction/{id}")]
-        public async Task<IActionResult> UpdateStockTransaction(int id,[FromBody] StockTransactionCreate newdata)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateStockTransaction(int id, [FromBody] StockTransactionUpdateDto updateDto)
         {
-            var stockTransaction = await _stockTransactionService.GetStockTransactionByIdAsync(id);
-            if(stockTransaction.Data == null) 
-                return Ok(stockTransaction);
-
             var userId = User.GetUserId();
-            if (userId is not null)
-            {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Stok Hareketini Güncelledi.Stok Hareketi:{stockTransaction.Data.StockTxnId}");
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
+            if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
 
-            stockTransaction.Data =_mapper.Map(newdata, stockTransaction.Data);
+            var response = await _stockTransactionService.GetStockTransactionByIdAsync(id);
+            if (!response.Success) return NotFound(response);
 
-            var result = await _stockTransactionService.UpdateStockTransactionAsync(stockTransaction.Data);
+            var transactionToUpdate = response.Data;
+            _mapper.Map(updateDto, transactionToUpdate);
 
+            var result = await _stockTransactionService.UpdateStockTransactionAsync(transactionToUpdate, userId.Value);
+
+            if (!result.Success) return BadRequest(result);
             return Ok(result);
-
         }
 
-        [HttpPost("deletestocktransaction/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStockTransaction(int id)
         {
             var userId = User.GetUserId();
-            if (userId is not null)
-            {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Stok Hareketni Sildi.Stok Hareketi:{_stockTransactionService.GetStockTransactionByIdAsync(id)}");
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
+            if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
 
-            var result=await _stockTransactionService.DeleteStockTransactionAsync(id);
+            var result = await _stockTransactionService.DeleteStockTransactionAsync(id, userId.Value);
+
+            if (!result.Success) return NotFound(result);
             return Ok(result);
         }
     }

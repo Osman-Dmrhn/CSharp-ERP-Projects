@@ -1,75 +1,102 @@
-import React, { createContext, useState, useEffect, useContext} from 'react';
+// Dosya: src/contexts/AuthProvider.tsx
+
+import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import authService from '../api/authService';
 import { getMe } from '../api/UserApi';
+import type { UserLoginRequest } from '../models/LoginDtos/UserLoginRequest';
 import type { User } from '../models/UserDtos/User';
 
-// Context'in içinde tutulacak verilerin ve fonksiyonların tipini belirliyoruz
 interface AuthContextType {
-  isAuthenticated: boolean;
   user: User | null;
-  isLoading: boolean;
+  isAuthenticated: boolean;
+  login: (credentials: UserLoginRequest) => Promise<void>;
   logout: () => void;
+  loading: boolean;
 }
 
-// Context'i oluşturuyoruz
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Diğer bileşenleri sarmalayacak olan Provider bileşenimiz
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true); // Başlangıçta yükleniyor durumunda
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const validateTokenAndFetchUser = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setIsLoading(false);
-        return;
+  // LOG 1: Provider'ın her render olduğunda o anki state'ini görelim
+  console.log('%cAuthProvider Render Edildi:', 'color: orange; font-weight: bold;', { loading, user });
+
+  const checkSession = async () => {
+    // LOG 2
+    console.log('%c[1] checkSession Başladı', 'color: blue');
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // LOG 3
+      console.log('%c[2] Token bulunamadı.', 'color: red');
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+    try {
+      // LOG 4
+      console.log('%c[2] Token bulundu, kullanıcı bilgisi isteniyor...', 'color: green');
+      const userData = await getMe();
+      // LOG 5
+      console.log('%c[3] Kullanıcı bilgisi geldi:', 'color: green; font-weight: bold;', userData);
+      setUser(userData);
+    } catch (error) {
+      console.error('Oturum doğrulama hatası:', error);
+      setUser(null);
+      localStorage.removeItem('token');
+    } finally {
+      // LOG 6
+      console.log('%c[4] checkSession Bitti, loading false yapılıyor.', 'color: blue');
+      setLoading(false);
+    }
+  };
+
+  const login = async (credentials: UserLoginRequest) => {
+    // LOG 7
+    console.log('%c[A] Login fonksiyonu çağrıldı.', 'color: purple; font-weight: bold;');
+    try {
+      const response = await authService.login(credentials);
+      if (response.success && response.data) {
+        localStorage.setItem('token', response.data);
+        // LOG 8
+        console.log('%c[B] Token kaydedildi, checkSession tetikleniyor.', 'color: purple');
+        await checkSession();
+        // LOG 9
+        console.log('%c[C] checkSession bitti, login fonksiyonu tamamlandı.', 'color: purple; font-weight: bold;');
+      } else {
+        throw new Error(response.message || 'Giriş başarısız.');
       }
-
-      try {
-        // Token varsa, /me endpoint'i ile kullanıcıyı doğrula ve bilgilerini al
-        const userData = await getMe();
-        setUser(userData);
-      } catch (error) {
-        // Eğer token geçersizse veya bir hata oluşursa, kullanıcı bilgilerini temizle
-        console.error("Token doğrulama hatası:", error);
-        setUser(null);
-        localStorage.removeItem('token');
-      } finally {
-        // Her durumda yüklenme durumunu bitir
-        setIsLoading(false);
-      }
-    };
-
-    validateTokenAndFetchUser();
-  }, []); // Bu useEffect sadece uygulama ilk yüklendiğinde 1 kez çalışır
+    } catch (error) {
+      console.error('Giriş hatası:', error);
+      throw error;
+    }
+  };
 
   const logout = () => {
-    setUser(null);
     localStorage.removeItem('token');
-    // Login sayfasına yönlendirme de burada yapılabilir
+    setUser(null);
     window.location.href = '/login';
   };
 
-  // Eğer başlangıçta hala kullanıcı verisi çekiliyorsa, bir yüklenme ekranı göster
-  if (isLoading) {
-   
-  }
+  useEffect(() => {
+    // Sayfa ilk yüklendiğinde oturumu kontrol et
+    checkSession();
+  }, []);
 
-  // Context'in değerlerini Provider aracılığıyla alt bileşenlere sunuyoruz
   return (
-    <AuthContext.Provider value={{ isAuthenticated: !!user, user, isLoading, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Context'i diğer bileşenlerde kolayca kullanmak için bir custom hook
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth, AuthProvider içinde kullanılmalıdır');
+    throw new Error('useAuth hook must be used within an AuthProvider');
   }
   return context;
 };

@@ -1,4 +1,6 @@
-﻿using ProductionAndStockERP.Helpers;
+﻿// Dosya: Interfaces/IOrderService.cs
+using ProductionAndStockERP.Dtos.OrderDtos;
+using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Models;
 
 namespace ProductionAndStockERP.Interfaces
@@ -7,9 +9,8 @@ namespace ProductionAndStockERP.Interfaces
     {
         Task<ResponseHelper<IEnumerable<Order>>> GetAllOrdersAsync();
         Task<ResponseHelper<Order>> GetOrderByIdAsync(int id);
-
-        Task<ResponseHelper<bool>> CreateOrderAsync(Order order);
-        Task<ResponseHelper<bool>> UpdateOrderAsync(Order order);
-        Task<ResponseHelper<bool>> DeleteOrderAsync(int id);
+        Task<ResponseHelper<Order>> CreateOrderAsync(Order order, int performingUserId);
+        Task<ResponseHelper<Order>> UpdateOrderAsync(Order order, int performingUserId);
+        Task<ResponseHelper<bool>> DeleteOrderAsync(int id, int performingUserId);
     }
 }

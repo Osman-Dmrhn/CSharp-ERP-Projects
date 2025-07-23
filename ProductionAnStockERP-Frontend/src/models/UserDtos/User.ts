@@ -1,6 +1,7 @@
 export interface User {
-  id: string;
+  userId: number;
   userName: string;
   email: string;
-  role: 'Admin' | 'User' | 'Editor'; // Rolleri projenize göre düzenleyin
+  isActive: boolean;
+  role: 'Admin' | 'Producer' | 'SalesManager';
 }

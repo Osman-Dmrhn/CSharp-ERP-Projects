@@ -1,0 +1,1 @@
+export type ProductionOrderStatus = 'Completed' | 'InProgress' | 'Started';

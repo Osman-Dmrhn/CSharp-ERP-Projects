@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+﻿// Dosya: Controllers/OrderController.cs
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductionAndStockERP.Dtos.OrderDtos;
-using ProductionAndStockERP.Dtos.UserDtos;
 using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Interfaces;
 using ProductionAndStockERP.Models;
@@ -11,94 +11,79 @@ using System.Security.Claims;
 namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "Admin,Salesman")]
+    [Authorize(Roles = "Admin,SalesManager")]
     [Route("api/orders")]
-    public class OrderController : Controller
+    public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
-        private readonly IActivityLogsService _activityLogsService;
-        public OrderController(IOrderService orderService,IMapper mapper, IActivityLogsService activityLogsService)
+        // Log servisi ve HttpContextAccessor artık burada GEREKLİ DEĞİL.
+
+        public OrderController(IOrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
             _mapper = mapper;
-            _activityLogsService = activityLogsService; 
         }
 
-        [HttpGet("getallorders")]
+        [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
             var result = await _orderService.GetAllOrdersAsync();
             return Ok(result);
         }
 
-        [HttpGet("getorderbyid")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
             var result = await _orderService.GetOrderByIdAsync(id);
+            if (!result.Success) return NotFound(result);
             return Ok(result);
         }
 
-        [HttpPost("createorder")]
-        public async Task<IActionResult> CreateOrder([FromBody] CreateUserDto newdata)
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderCreateDto createOrderDto)
         {
-            var order= _mapper.Map<Order>(newdata);
-            order.CreatedAt= DateTime.Now;
+            var userId = User.GetUserId();
+            if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
+
+            var order = _mapper.Map<Order>(createOrderDto);
+            order.CreatedAt = DateTime.UtcNow;
             order.Status = OrderStatus.Pending;
+            order.UserId = userId.Value;
 
-            var userId = User.GetUserId();
-            if(userId is not null)
-            {
-                order.UserId = userId.Value;
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
-            await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Yeni Sipariş Ekledi.Sipariş:{order.OrderId}");
+            var result = await _orderService.CreateOrderAsync(order, userId.Value);
 
-            var result = await _orderService.CreateOrderAsync(order);
+            if (!result.Success) return BadRequest(result);
             return Ok(result);
         }
 
-        [HttpPost("updateorder/{id}")]
-        public async Task<IActionResult> UpdateOrder(int id,[FromBody] OrderUpdateDto newdata)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderUpdateDto updateDto)
         {
-            var order = await _orderService.GetOrderByIdAsync(id);
-            if(order.Data ==null)
-            {
-                return Ok(order);
-            }
-
             var userId = User.GetUserId();
-            if (userId is not null)
-            {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Siparişi Güncelledi.Sipariş:{order.Data.OrderId}");
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
-            
-            _mapper.Map(newdata, order.Data);
-            var result = await _orderService.UpdateOrderAsync(order.Data);
+            if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
+
+            var response = await _orderService.GetOrderByIdAsync(id);
+            if (!response.Success) return NotFound(response);
+
+            var orderToUpdate = response.Data;
+            _mapper.Map(updateDto, orderToUpdate);
+
+            var result = await _orderService.UpdateOrderAsync(orderToUpdate, userId.Value);
+
+            if (!result.Success) return BadRequest(result);
             return Ok(result);
         }
 
-        [HttpPost("deleteorder/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var userId = User.GetUserId();
-            if (userId is not null)
-            {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Siparişi Sildi.Sipariş:{_orderService.GetOrderByIdAsync(id)}");
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
+            if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
 
-            var result =await _orderService.DeleteOrderAsync(id);
+            var result = await _orderService.DeleteOrderAsync(id, userId.Value);
+
+            if (!result.Success) return NotFound(result);
             return Ok(result);
         }
     }

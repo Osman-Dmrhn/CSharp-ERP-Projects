@@ -1,15 +1,17 @@
-﻿using ProductionAndStockERP.Helpers;
+﻿
+using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Models;
+using ProductionAndStockERP.Dtos.StockTransactionDtos; 
 
 namespace ProductionAndStockERP.Interfaces
 {
     public interface IStockTransactionService
     {
-        Task<ResponseHelper<IEnumerable<StockTransaction>>> GetAllStockTransactionAsync();
+        Task<ResponseHelper<PagedResponse<StockTransactionDto>>> GetAllStockTransactionAsync(StockTransactionFilterParameters filters);
         Task<ResponseHelper<StockTransaction>> GetStockTransactionByIdAsync(int id);
 
-        Task<ResponseHelper<bool>> CreateStockTransactionAsync(StockTransaction stockT);
-        Task<ResponseHelper<bool>> UpdateStockTransactionAsync(StockTransaction stockT);
-        Task<ResponseHelper<bool>> DeleteStockTransactionAsync(int id);
+        Task<ResponseHelper<StockTransaction>> CreateStockTransactionAsync(StockTransaction stockT, int performingUserId);
+        Task<ResponseHelper<StockTransaction>> UpdateStockTransactionAsync(StockTransaction stockT, int performingUserId);
+        Task<ResponseHelper<bool>> DeleteStockTransactionAsync(int id, int performingUserId);
     }
 }

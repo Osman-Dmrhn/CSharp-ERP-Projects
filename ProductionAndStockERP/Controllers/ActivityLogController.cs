@@ -1,38 +1,44 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// Dosya: Controllers/ActivityLogController.cs
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Interfaces;
 
 namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/activitylog")]
     public class ActivityLogController : ControllerBase
     {
         private readonly IActivityLogsService _activityLogsService;
+
         public ActivityLogController(IActivityLogsService activityLogsService)
         {
             _activityLogsService = activityLogsService;
         }
-        [HttpGet("getallactivitiylogs")]
-        public async Task<IActionResult> GetAllActivitiyLogs()
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllActivitiyLogs([FromQuery] LogFilterParameters filters)
         {
-            var result =await _activityLogsService.GetAllLogsAsync();
-            return Ok(result);
+            var result = await _activityLogsService.GetAllLogsAsync(filters);
+            if (result.Success)
+            {
+                Response.AddPaginationHeader(result.Data.CurrentPage, result.Data.PageSize, result.Data.TotalCount, result.Data.TotalPages);
+                return Ok(result.Data.Items);
+            }
+            return BadRequest(result);
         }
 
-        [HttpGet("getlogsbyuserid/{id}")]
-        public async Task<IActionResult> GetLogsByUserId(int id)
-        {
-            var result = await _activityLogsService.GetLogsByUserIdAsync(id);
-            return Ok(result);
-        }
-
-        [HttpGet("getlogbyid/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetLogById(int id)
         {
             var result = await _activityLogsService.GetLogByIdAsync(id);
-            return Ok();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return NotFound(result);
         }
     }
 }

@@ -1,19 +1,18 @@
-﻿using ProductionAndStockERP.Helpers;
+﻿using ProductionAndStockERP.Dtos.UserDtos;
+using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Models;
 
 namespace ProductionAndStockERP.Interfaces
 {
     public interface IUserService
     {
-        Task<ResponseHelper<IEnumerable<User>>> GetAllUsers();
-        Task<ResponseHelper<User>> GetUserById(int id);
+        Task<ResponseHelper<PagedResponse<UserDto>>> GetAllUsers(UserFilterParameters filters);
+        Task<ResponseHelper<UserDto>> GetUserById(int id);
+        Task<ResponseHelper<string>> VerificationUser(string email, string passwordhash);
 
-        Task<ResponseHelper<string>> VerificationUser(string email,string passwordhash);
-
-        Task<ResponseHelper<string>> UpdateUserPassword(int id,string oldpass,string newpass);
-
-        Task<ResponseHelper<bool>> CreateUserAsync(User user);
-        Task<ResponseHelper<bool>> UpdateUserAsync(User user);
-        Task<ResponseHelper<bool>> DeleteUserAsync(int id);
+        Task<ResponseHelper<string>> UpdateUserPasswordAsync(int userIdToUpdate, string oldPassword, string newPassword, int performingUserId);
+        Task<ResponseHelper<User>> CreateUserAsync(User user, int performingUserId);
+        Task<ResponseHelper<User>> UpdateUserAsync(User user, int performingUserId);
+        Task<ResponseHelper<bool>> DeleteUserAsync(int id, int performingUserId);
     }
 }

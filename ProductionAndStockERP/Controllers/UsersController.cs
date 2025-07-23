@@ -1,160 +1,130 @@
-﻿using AutoMapper;
+﻿// Dosya: Controllers/UsersController.cs
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductionAndStockERP.Dtos.UserDtos;
 using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Interfaces;
 using ProductionAndStockERP.Models;
-using ProductionAndStockERP.Services;
+using System.Security.Claims;
 
 namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Authorize] 
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly IActivityLogsService _activityLogsService;
 
-        public UsersController(IUserService userService,IMapper mapper,IActivityLogsService activityLogsService)
+        public UsersController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;
-            _activityLogsService = activityLogsService;
         }
 
-        //POST İŞLEMLERİ
-
+        
+        [AllowAnonymous] 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest data)
         {
             var result = await _userService.VerificationUser(data.Email, data.PasswordHash);
+            if (!result.Success) return Unauthorized(result);
             return Ok(result);
         }
 
         [HttpGet("me")]
-        public async Task<IActionResult> Me()
+        public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.GetUserId();
+            if (userId == null) return Unauthorized("Geçersiz token.");
+
             var result = await _userService.GetUserById(userId.Value);
-            if (userId is not null)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
-        }
-
-
-        [Authorize(Roles ="Admin")]
-        [HttpPost("createuser")]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto data)
-        {
-            var newuser =  _mapper.Map<User>(data);
-
-            newuser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newuser.PasswordHash);
-
-            var userId = User.GetUserId();
-
-            if (userId is not null)
-            {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı Yeni Kullanıcı Ekledi.Kullanıcı:{newuser}");
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
-
-            var result = await _userService.CreateUserAsync(newuser);
+            if (!result.Success) return NotFound(result);
             return Ok(result);
         }
 
-        [Authorize]
-        [HttpPost("updateuser/{id}")]
-        public async Task<IActionResult> UpdateUser(int id,[FromBody] UpdateUserDto data)
-        {
-
-            var user = await _userService.GetUserById(id);
-
-            if(user.Data != null) {
-                _mapper.Map(data, user.Data);
-
-                var userId = User.GetUserId();
-                if (userId is not null)
-                {
-                    await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı, Kullanıcı Güncelledi.Kullanıcı:{user.Data.UserId}");
-                }
-                else
-                {
-                    return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-                }
-
-
-                var result = await _userService.UpdateUserAsync(user.Data);
-                return Ok(result);
-            }
-            return Ok(user);
-
-        }
-
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
-        [HttpPost("deleteuser/{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var userId = User.GetUserId();
-            if (userId is not null)
-            {
-                await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı, Kullanıcı Sildi.Kullanıcı:{_userService.GetUserById(id)}");
-            }
-            else
-            {
-                return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-            }
-
-            var result = await _userService.DeleteUserAsync(id);
-            return Ok(result);
-        }
-
-        [Authorize]
-        [HttpPost("updateuserpassword")]
-        public async Task<IActionResult> UpdateUserPassword([FromBody] UpdateUserPasswordDto  data)
-        {
-            var user = await _userService.GetUserById(data.UserId);
-            if(user.Data != null)
-            {
-                var userId = User.GetUserId();
-                if (userId is not null)
-                {
-                    await _activityLogsService.AddLogAsync(userId.Value, $"Kullanıcı, Kullanıcı Şifresini Güncelledi.Kullanıcı:{_userService.GetUserById(data.UserId)}");
-                }
-                else
-                {
-                    return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
-                }
-
-                var result = await _userService.UpdateUserPassword(data.UserId,data.oldpass,data.newpass);
-                return Ok(result);
-            }
-            return Ok(user);
-        }
-
-        //GET İŞLEMLERİ
-        [Authorize]
-        [HttpGet("getuserbyid/{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
             var result = await _userService.GetUserById(id);
+            if (!result.Success) return NotFound(result);
             return Ok(result);
         }
 
+        [HttpGet]
         [Authorize(Roles = "Admin")]
-        [HttpGet("getalluser")]
-        public async Task<IActionResult> GetAllUser()
+        public async Task<IActionResult> GetAllUsers([FromQuery] UserFilterParameters filters)
         {
-            var result = await _userService.GetAllUsers();
+            var result = await _userService.GetAllUsers(filters);
+            // Sayfalama header'ları eklenebilir.
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto data)
+        {
+            var performingUserId = User.GetUserId();
+            if (performingUserId == null) return Unauthorized();
+
+            var newUser = _mapper.Map<User>(data);
+
+            var result = await _userService.CreateUserAsync(newUser, performingUserId.Value);
+
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")] 
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto data)
+        {
+            var performingUserId = User.GetUserId();
+            if (performingUserId == null) return Unauthorized();
+
+            var response = await _userService.GetUserById(id);
+            if (!response.Success) return NotFound(response);
+
+            var userToUpdate = _mapper.Map<User>(response.Data); 
+            _mapper.Map(data, userToUpdate);
+
+            var result = await _userService.UpdateUserAsync(userToUpdate, performingUserId.Value);
+
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPut("password")] 
+        public async Task<IActionResult> UpdateUserPassword([FromBody] UpdateUserPasswordDto data)
+        {
+            var performingUserId = User.GetUserId();
+            if (performingUserId == null) return Unauthorized();
+
+            
+            if (!User.IsInRole("Admin") && performingUserId.Value != data.UserId)
+            {
+                return Forbid("Bu işlemi yapma yetkiniz yok.");
+            }
+
+            var result = await _userService.UpdateUserPasswordAsync(data.UserId, data.oldpass, data.newpass, performingUserId.Value);
+
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var performingUserId = User.GetUserId();
+            if (performingUserId == null) return Unauthorized();
+
+            var result = await _userService.DeleteUserAsync(id, performingUserId.Value);
+
+            if (!result.Success) return NotFound(result);
             return Ok(result);
         }
     }

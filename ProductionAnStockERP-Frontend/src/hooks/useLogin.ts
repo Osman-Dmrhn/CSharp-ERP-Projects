@@ -1,34 +1,32 @@
-import { useState } from "react";
-import authService from "../api/authService";
-import type { UserLoginRequest } from "../models/LoginDtos/UserLoginRequest";
+// Dosya: src/hooks/useLogin.ts
+
+import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import type { UserLoginRequest } from '../models/LoginDtos/UserLoginRequest';
 
 export const useLogin = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // Bu state'ler SADECE login formundaki butona ve hata mesajına özeldir.
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const performLogin = async (loginData: UserLoginRequest):Promise<boolean> =>  {
+  // Merkezi AuthProvider'daki login fonksiyonunu alıyoruz.
+  const { login } = useAuth();
+
+  const performLogin = async (credentials: UserLoginRequest): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const loginResponse = await authService.login(loginData);
-      const token = loginResponse.data;
+      await login(credentials);
 
-      localStorage.setItem("token", token);
-      console.log("Giriş başarılı!");
       setIsLoading(false);
-      return true;
+      return true; 
     } catch (err: any) {
-
-      setError(err?.message || "Login işlemi başarısız oldu.");
-      localStorage.removeItem("token");
+      setError(err.message || 'Giriş sırasında bir hata oluştu.');
       setIsLoading(false);
       return false;
-
-    } finally {
-      
-      setIsLoading(false);
     }
   };
+
   return { performLogin, isLoading, error };
 };
