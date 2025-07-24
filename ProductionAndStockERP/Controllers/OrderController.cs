@@ -17,7 +17,6 @@ namespace ProductionAndStockERP.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
-        // Log servisi ve HttpContextAccessor artık burada GEREKLİ DEĞİL.
 
         public OrderController(IOrderService orderService, IMapper mapper)
         {
@@ -26,10 +25,15 @@ namespace ProductionAndStockERP.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrders([FromQuery] OrderFilterParameters filters)
         {
-            var result = await _orderService.GetAllOrdersAsync();
-            return Ok(result);
+            var result = await _orderService.GetAllOrdersAsync(filters);
+            if (result.Success)
+            {
+                Response.AddPaginationHeader(result.Data.CurrentPage, result.Data.PageSize, result.Data.TotalCount, result.Data.TotalPages);
+                return Ok(result.Data.Items);
+            }
+            return BadRequest(result);
         }
 
         [HttpGet("{id}")]
@@ -54,7 +58,7 @@ namespace ProductionAndStockERP.Controllers
             var result = await _orderService.CreateOrderAsync(order, userId.Value);
 
             if (!result.Success) return BadRequest(result);
-            return Ok(result);
+            return Ok(result); 
         }
 
         [HttpPut("{id}")]
@@ -63,11 +67,8 @@ namespace ProductionAndStockERP.Controllers
             var userId = User.GetUserId();
             if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
 
-            var response = await _orderService.GetOrderByIdAsync(id);
-            if (!response.Success) return NotFound(response);
-
-            var orderToUpdate = response.Data;
-            _mapper.Map(updateDto, orderToUpdate);
+            var orderToUpdate = _mapper.Map<Order>(updateDto);
+            orderToUpdate.OrderId = id; 
 
             var result = await _orderService.UpdateOrderAsync(orderToUpdate, userId.Value);
 

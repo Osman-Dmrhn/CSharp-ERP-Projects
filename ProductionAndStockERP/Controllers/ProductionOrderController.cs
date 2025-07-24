@@ -24,14 +24,19 @@ namespace ProductionAndStockERP.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet] 
-        public async Task<IActionResult> GetAllProductionOrders()
+        [HttpGet]
+        public async Task<IActionResult> GetAllProductionOrders([FromQuery] ProductionOrderFilterParameters filters)
         {
-            var result = await _productionOrderService.GetAllPrdouctionOrderAsync();
-            return Ok(result);
+            var result = await _productionOrderService.GetAllPrdouctionOrderAsync(filters);
+            if (result.Success)
+            {
+                Response.AddPaginationHeader(result.Data.CurrentPage, result.Data.PageSize, result.Data.TotalCount, result.Data.TotalPages);
+                return Ok(result.Data.Items);
+            }
+            return BadRequest(result);
         }
 
-        [HttpGet("{id}")] 
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProductionOrderById(int id)
         {
             var result = await _productionOrderService.GetPrdouctionOrderByIdAsync(id);
@@ -39,7 +44,7 @@ namespace ProductionAndStockERP.Controllers
             return Ok(result);
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<IActionResult> CreateProductionOrder([FromBody] ProductionOrderCreateDto createDto)
         {
             var userId = User.GetUserId();
@@ -47,7 +52,7 @@ namespace ProductionAndStockERP.Controllers
 
             var productionOrder = _mapper.Map<ProductionOrder>(createDto);
             productionOrder.Status = Status.Started;
-            productionOrder.CreatedAt = DateTime.UtcNow; 
+            productionOrder.CreatedAt = DateTime.UtcNow;
             productionOrder.CreatedBy = userId.Value;
 
             var result = await _productionOrderService.CreatePrdouctionOrderAsync(productionOrder, userId.Value);
@@ -56,25 +61,22 @@ namespace ProductionAndStockERP.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")] 
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProductionOrder(int id, [FromBody] ProductionOrderUpdateDto updateDto)
         {
             var userId = User.GetUserId();
             if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
 
-            var response = await _productionOrderService.GetPrdouctionOrderByIdAsync(id);
-            if (!response.Success) return NotFound(response);
+            var productionOrderToUpdate = _mapper.Map<ProductionOrder>(updateDto);
+            productionOrderToUpdate.ProductionId = id;
 
-            var orderToUpdate = response.Data;
-            _mapper.Map(updateDto, orderToUpdate);
-
-            var result = await _productionOrderService.UpdatePrdouctionOrderAsync(orderToUpdate, userId.Value);
+            var result = await _productionOrderService.UpdatePrdouctionOrderAsync(productionOrderToUpdate, userId.Value);
 
             if (!result.Success) return BadRequest(result);
             return Ok(result);
         }
 
-        [HttpDelete("{id}")] 
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductionOrder(int id)
         {
             var userId = User.GetUserId();

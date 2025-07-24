@@ -1,7 +1,10 @@
 export interface ActivityLog {
-  id: number;
-  userId: number;
+   id: number;
   userName: string;
   action: string;
-  createdAt: string;
+  createdAt: string; // ISO string formatında gelecek
+  
+  // YENİ EKLENEN ALANLAR
+  status: 'Başarılı' | 'Başarısız';
+  targetEntity?: string;
 }

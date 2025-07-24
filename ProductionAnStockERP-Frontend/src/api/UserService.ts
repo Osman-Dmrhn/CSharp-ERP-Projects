@@ -6,7 +6,7 @@ import type { UpdateUserDto } from '../models/UserDtos/UpdateUserDto.ts';
 import type { UpdateUserPasswordDto } from '../models/UserDtos/UpdateUserPasswordDto.ts';
 
 export const getAllUsers = async (): Promise<ApiResponse<User[]>> => {
-  const response = await api.get<ApiResponse<User[]>>('/users/getalluser');
+  const response = await api.get<ApiResponse<User[]>>('/users/GetAllUsers');
   return response.data;
 };
 
@@ -26,7 +26,7 @@ export const deleteUser = async (id: number): Promise<ApiResponse<boolean>> => {
 };
 
 export const updateUserPass = async (data: UpdateUserPasswordDto): Promise<ApiResponse<void>> => {
-  const response = await api.post('/users/updateuserpassword', data);
+  const response = await api.put('/users/password', data);
   return response.data;
 };
 

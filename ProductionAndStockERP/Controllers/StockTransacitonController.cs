@@ -12,8 +12,8 @@ namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
     [Authorize(Roles = "Admin,Producer")]
-    [Route("api/stocktransaction")]
-    public class StockTransactionController : ControllerBase // DÜZELTME: İsimdeki yazım hatası düzeltildi
+    [Route("api/stocktransactions")] // Route'u çoğul yapmak daha standarttır
+    public class StockTransactionController : ControllerBase
     {
         private readonly IStockTransactionService _stockTransactionService;
         private readonly IMapper _mapper;
@@ -65,11 +65,8 @@ namespace ProductionAndStockERP.Controllers
             var userId = User.GetUserId();
             if (userId == null) return BadRequest("Kullanıcı kimliği token'da bulunamadı.");
 
-            var response = await _stockTransactionService.GetStockTransactionByIdAsync(id);
-            if (!response.Success) return NotFound(response);
-
-            var transactionToUpdate = response.Data;
-            _mapper.Map(updateDto, transactionToUpdate);
+            var transactionToUpdate = _mapper.Map<StockTransaction>(updateDto);
+            transactionToUpdate.StockTxnId = id;
 
             var result = await _stockTransactionService.UpdateStockTransactionAsync(transactionToUpdate, userId.Value);
 

@@ -5,10 +5,11 @@ namespace ProductionAndStockERP.Dtos.ProductionOrder
 {
     public class ProductionOrderUpdateDto
     {
-        [Required]
-        public string ProductName { get; set; }
+        [Required(ErrorMessage = "Ürün seçimi zorunludur.")]
+        public int ProductId { get; set; }
 
-        [Range(1, int.MaxValue)]
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Miktar 0'dan büyük olmalıdır.")]
         public int Quantity { get; set; }
 
         [Required]

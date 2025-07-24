@@ -27,7 +27,7 @@ namespace ProductionAndStockERP.Services
                 Status = status,
                 TargetEntity = targetEntity,
                 TargetEntityId = targetEntityId,
-                Changes = changes
+                Changes = changes ?? string.Empty
             };
 
             await _context.ActivityLogs.AddAsync(log);

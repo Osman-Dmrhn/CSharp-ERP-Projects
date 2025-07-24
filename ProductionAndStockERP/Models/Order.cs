@@ -1,11 +1,15 @@
-﻿namespace ProductionAndStockERP.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProductionAndStockERP.Models
 {
     public class Order
     {
         public int OrderId { get; set; }
         public string CustomerName { get; set; }
 
-        public string ProductName { get; set; }
+        [Required]
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
 
         public int Quantity { get; set; }
 
