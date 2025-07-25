@@ -25,6 +25,7 @@ namespace ProductionAndStockERP.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllOrders([FromQuery] OrderFilterParameters filters)
         {
             var result = await _orderService.GetAllOrdersAsync(filters);

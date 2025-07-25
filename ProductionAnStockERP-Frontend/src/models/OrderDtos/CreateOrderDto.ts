@@ -1,6 +1,5 @@
-// Sipariş oluşturma DTO'su
 export interface CreateOrderDto {
-  customerName:string;
-  productName: string;
+  productId: number;
+  customerName: string;
   quantity: number;
 }

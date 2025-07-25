@@ -1,9 +1,11 @@
-// StockTransaction model
+export type TransactionType = 'Entry' | 'Exit';
+
 export interface StockTransaction {
-  stockTxnId: number; // Stok hareketi ID'si
-  transactionType: 'Entry' | 'Exit'; // Hareket türü (örneğin, 'Giriş', 'Çıkış')
-  quantity: number; // Miktar
-  produxtName: string;
-  RelatedOrderId?: number|null; // Açıklama
-  createdAt: string; // Oluşturulma tarihi
+  stockTxnId: number;
+  productId: number;
+  productName: string;
+  quantity: number;
+  transactionType: TransactionType;
+  relatedOrderId?: number;
+  createdAt: string;
 }

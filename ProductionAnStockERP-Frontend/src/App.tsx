@@ -15,6 +15,8 @@ import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 // Eklenen Importlar
 import { AuthProvider } from "./contexts/AuthContext"; 
 import AppNavbar from "./components/AppNavbar";     
+import ProductPage from "./pages/ProductPage";
+import ReportPage from "./pages/ReportPage";
 
 function App() {
   return (
@@ -58,6 +60,16 @@ function App() {
           <Route path="/change-password" element={
             <ProtectedRoute>
               <UpdatePasswordPage />
+            </ProtectedRoute>
+          }/>
+          <Route path="/products" element={
+            <ProtectedRoute>
+              <ProductPage/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/reports" element={
+            <ProtectedRoute>
+              <ReportPage/>
             </ProtectedRoute>
           }/>
         </Routes>

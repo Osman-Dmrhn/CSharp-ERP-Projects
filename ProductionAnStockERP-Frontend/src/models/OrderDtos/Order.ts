@@ -1,13 +1,14 @@
-import type { OrderStatus } from "./OrderStatus";
 
 export interface Order {
   orderId: number;
-  productName: string;
+  productId: number;
+  productName: string; 
   customerName: string;
   quantity: number;
-  status: OrderStatus;
+  status: string;
   createdAt: string;
   userId: number;
+  userName: string;
 }
 
 

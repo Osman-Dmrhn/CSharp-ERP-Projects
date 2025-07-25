@@ -1,7 +1,8 @@
-// StockTransactionCreateDto model
+import type { TransactionType } from "./StockTransaction";
+
 export interface StockTransactionCreateDto {
-  productName: string;
+  productId: number;
   quantity: number;
-  transactionType: 'Entry' | 'Exit';  // Giriş veya çıkış
-  relatedOrderId?: number | null;
+  transactionType: TransactionType;
+  relatedOrderId?: number;
 }

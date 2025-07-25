@@ -33,6 +33,7 @@ namespace ProductionAndStockERP.Services
             {
                 return ResponseHelper<string>.Fail("Kullanıcı Adı veya Şifre Hatalı");
             }
+       
             var result = JwtHelper.GenerateJwtToken(user.UserName, user.UserId, user.Role);
             return ResponseHelper<string>.Ok(result);
         }
@@ -47,7 +48,8 @@ namespace ProductionAndStockERP.Services
                     UserId = u.UserId,
                     UserName = u.UserName,
                     Email = u.Email,
-                    Role = u.Role
+                    Role = u.Role,
+                    IsActive=u.IsActive,
                 })
                 .FirstOrDefaultAsync();
 
@@ -73,7 +75,8 @@ namespace ProductionAndStockERP.Services
                 UserId = u.UserId,
                 UserName = u.UserName,
                 Email = u.Email,
-                Role = u.Role
+                Role = u.Role,
+                IsActive= u.IsActive
             });
 
             // DÜZELTME: Sayfalama mantığı constructor kullanacak şekilde yenilendi.
@@ -107,6 +110,7 @@ namespace ProductionAndStockERP.Services
             existingUser.UserName = updatedUser.UserName;
             existingUser.Email = updatedUser.Email;
             existingUser.Role = updatedUser.Role;
+            existingUser.IsActive = updatedUser.IsActive;
             await _context.SaveChangesAsync();
 
             string changesJson = changes.Count > 0 ? JsonSerializer.Serialize(changes) : null;

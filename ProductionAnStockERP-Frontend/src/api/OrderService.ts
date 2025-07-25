@@ -1,60 +1,43 @@
-import api from './api';  // api.ts dosyasını import ediyoruz
-import type { Order} from '../models/OrderDtos/Order';
-import type {OrderUpdateDto} from '../models/OrderDtos/OrderUpdate'
-import type  { CreateOrderDto } from '../models/OrderDtos/CreateOrderDto';
+
+import api from './api';
 import type { ApiResponse } from '../models/ApiResponse';
+import type { Order } from '../models/OrderDtos/Order';
+import type { OrderUpdateDto } from '../models/OrderDtos/OrderUpdate';
+import type { CreateOrderDto } from '../models/OrderDtos/CreateOrderDto';
+import type { OrderFilters } from '../models/OrderDtos/OrderFilters ';
+import type { PaginationInfo } from '../models/LogDtos/PaginationInfo';
 
-// Sipariş servisimiz
-const orderService = {
-  // Siparişleri al
-  getAllOrders: async (): Promise<ApiResponse<Order[]>> => {
-    try {
-      const response = await api.get('/orders/getallorders'); // Axios instance kullanılıyor
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+interface PaginatedOrderResponse {
+  orders: Order[];
+  pagination: PaginationInfo;
+}
 
-  // Sipariş ID'si ile siparişi al
-  getOrderById: async (id: number): Promise<ApiResponse<Order>> => {
-    try {
-      const response = await api.get(`/orders/getorderbyid?id=${id}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+export const getAllOrders = async (filters: OrderFilters): Promise<PaginatedOrderResponse> => {
+  const params = new URLSearchParams(filters as any).toString();
+  const response = await api.get<Order[]>(`/orders?${params}`);
+  
+  const paginationHeader = response.headers['x-pagination'];
+  const pagination: PaginationInfo = paginationHeader ? JSON.parse(paginationHeader) : {} as PaginationInfo;
 
-  // Yeni sipariş oluştur
-  createOrder: async (orderData: CreateOrderDto): Promise<ApiResponse<Order>> => {
-    try {
-      const response = await api.post('/orders/createorder', orderData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // Siparişi güncelle
-  updateOrder: async (id: number, orderData: OrderUpdateDto): Promise<ApiResponse<Order>> => {
-    try {
-      const response = await api.post(`/orders/updateorder/${id}`, orderData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // Siparişi sil
-  deleteOrder: async (id: number): Promise<ApiResponse<void>> => {
-    try {
-      const response = await api.post(`/orders/deleteorder/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
+  return { orders: response.data, pagination };
 };
 
-export default orderService;
+export const getOrderById = async (id: number): Promise<ApiResponse<Order>> => {
+  const response = await api.get<ApiResponse<Order>>(`/orders/${id}`);
+  return response.data;
+};
+
+export const createOrder = async (orderData: CreateOrderDto): Promise<ApiResponse<Order>> => {
+  const response = await api.post<ApiResponse<Order>>('/orders', orderData);
+  return response.data;
+};
+
+export const updateOrder = async (id: number, orderData: OrderUpdateDto): Promise<ApiResponse<Order>> => {
+  const response = await api.put<ApiResponse<Order>>(`/orders/${id}`, orderData);
+  return response.data;
+};
+
+export const deleteOrder = async (id: number): Promise<ApiResponse<boolean>> => {
+  const response = await api.delete<ApiResponse<boolean>>(`/orders/${id}`);
+  return response.data;
+};

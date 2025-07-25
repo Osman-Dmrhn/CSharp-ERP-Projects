@@ -78,9 +78,8 @@ namespace ProductionAndStockERP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -94,9 +93,36 @@ namespace ProductionAndStockERP.Migrations
 
                     b.HasKey("OrderId");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ProductionAndStockERP.Models.Product", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ProductionAndStockERP.Models.ProductionOrder", b =>
@@ -116,9 +142,8 @@ namespace ProductionAndStockERP.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -132,6 +157,8 @@ namespace ProductionAndStockERP.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductionOrders");
                 });
@@ -147,9 +174,8 @@ namespace ProductionAndStockERP.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -162,6 +188,8 @@ namespace ProductionAndStockERP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StockTxnId");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("RelatedOrderId");
 
@@ -216,6 +244,12 @@ namespace ProductionAndStockERP.Migrations
 
             modelBuilder.Entity("ProductionAndStockERP.Models.Order", b =>
                 {
+                    b.HasOne("ProductionAndStockERP.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ProductionAndStockERP.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -223,6 +257,8 @@ namespace ProductionAndStockERP.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ProductionAndStockERP.Models.ProductionOrder", b =>
@@ -238,19 +274,35 @@ namespace ProductionAndStockERP.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("ProductionAndStockERP.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Order");
+
+                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProductionAndStockERP.Models.StockTransaction", b =>
                 {
+                    b.HasOne("ProductionAndStockERP.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ProductionAndStockERP.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("RelatedOrderId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

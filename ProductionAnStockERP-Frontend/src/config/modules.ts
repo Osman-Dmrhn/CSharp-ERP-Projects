@@ -7,6 +7,7 @@ export interface Module {
   description: string;
   roles: UserRole[];
 }
+
 export const allModules: Module[] = [
   {
     path: '/orders',
@@ -37,6 +38,20 @@ export const allModules: Module[] = [
     roles:['Admin']
   },
   {
+    path: '/products',
+    icon: 'bi-tags-fill',
+    title: 'Ürün Yönetimi',
+    description: 'Sistemdeki ürünleri oluşturun, düzenleyin ve yönetin.',
+    roles:['Admin']
+  },
+  {
+    path: '/reports',
+    icon: 'bi-file-earmark-bar-graph-fill',
+    title: 'Raporlama',
+    description: 'Sistem verileriyle ilgili detaylı PDF raporları oluşturun ve indirin.',
+    roles: ['Admin', 'SalesManager']
+  },
+  {
     path: '/logs',
     icon: 'bi-journal-text',
     title: 'Log İşlemleri',
@@ -49,5 +64,5 @@ export const allModules: Module[] = [
     title: 'Şifre Değiştirme',
     description: 'Kullanıcı Şifre Değiştirme.',
     roles:['Admin','Producer','SalesManager']
-  } 
+  }
 ];

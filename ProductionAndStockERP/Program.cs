@@ -4,14 +4,22 @@ using Microsoft.IdentityModel.Tokens;
 using ProductionAndStockERP.Data;
 using ProductionAndStockERP.Helpers;
 using ProductionAndStockERP.Mappings;
+using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
+using QuestPDF.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 
-
+QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddEndpointsApiExplorer();
 
@@ -53,6 +61,9 @@ builder.Services.AddAuthentication(options =>
 
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtHelper._secretKey)),
+
+        RoleClaimType = ClaimTypes.Role,
+        NameClaimType = ClaimTypes.Name,
 
         ClockSkew = TimeSpan.Zero
     };

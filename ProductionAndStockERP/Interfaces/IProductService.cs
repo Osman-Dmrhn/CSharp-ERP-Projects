@@ -13,4 +13,3 @@ namespace ProductionAndStockERP.Interfaces
         Task<ResponseHelper<bool>> DeleteProductAsync(int id, int performingUserId);
     }
 }
-}

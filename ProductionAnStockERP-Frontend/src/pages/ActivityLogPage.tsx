@@ -1,13 +1,12 @@
-// Dosya: src/pages/ActivityLogPage.tsx
-
 import React, { useEffect, useState, useCallback } from 'react';
-import { getAllActivityLogs } from '../api/ActivityLogService';
+import { getAllActivityLogs, getLogDetails } from '../api/ActivityLogService';
 import type { LogFilters } from '../api/ActivityLogService';
-import type { ActivityLog} from '../models/LogDtos/ActivityLog';
+import type { ActivityLog, ActivityLogDetail } from '../models/LogDtos/ActivityLog';
 import type { PaginationInfo } from '../models/LogDtos/PaginationInfo';
-import { Container, Table, Spinner, Alert, Badge } from 'react-bootstrap';
+import { Container, Table, Spinner, Alert, Badge, Button } from 'react-bootstrap';
 import { LogFiltersComponent } from '../components/LogFilters';
 import { PaginationComponent } from '../components/Pagination';
+import { LogDetailModal } from '../components/LogDetailModal'; // Detay modalını import ediyoruz
 import { format } from 'date-fns';
 
 const ActivityLogPage: React.FC = () => {
@@ -16,6 +15,11 @@ const ActivityLogPage: React.FC = () => {
   const [filters, setFilters] = useState<LogFilters>({ pageNumber: 1, pageSize: 20 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Modal'ı ve detay verisini yönetecek state'ler
+  const [selectedLog, setSelectedLog] = useState<ActivityLogDetail | null>(null);
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
+  const [activeLogId, setActiveLogId] = useState<number | null>(null); // Hangi butonun spinner göstereceğini bilmek için
 
   const fetchLogs = useCallback(async () => {
     setLoading(true);
@@ -42,6 +46,26 @@ const ActivityLogPage: React.FC = () => {
   const handlePageChange = (page: number) => {
     setFilters(prev => ({ ...prev, pageNumber: page }));
   };
+  
+  // Detay butonuna tıklandığında çalışacak fonksiyon
+  const handleShowDetails = async (logId: number) => {
+    setActiveLogId(logId);
+    setIsDetailLoading(true);
+    setError(null);
+    try {
+      const result = await getLogDetails(logId);
+      if (result.success) {
+        setSelectedLog(result.data);
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      setError("Log detayı alınırken bir hata oluştu.");
+    } finally {
+      setIsDetailLoading(false);
+      setActiveLogId(null);
+    }
+  };
 
   return (
     <Container className="mt-4">
@@ -64,6 +88,7 @@ const ActivityLogPage: React.FC = () => {
                   <th>Hedef</th>
                   <th>Durum</th>
                   <th>Tarih</th>
+                  <th className="text-center">İncele</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,16 +104,31 @@ const ActivityLogPage: React.FC = () => {
                       </Badge>
                     </td>
                     <td>{format(new Date(log.createdAt), 'dd.MM.yyyy HH:mm:ss')}</td>
+                    <td className="text-center">
+                      <Button 
+                        variant="outline-primary" 
+                        size="sm" 
+                        onClick={() => handleShowDetails(log.id)}
+                        disabled={isDetailLoading}
+                      >
+                        {isDetailLoading && activeLogId === log.id 
+                          ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                          : '👁️ Detay'
+                        }
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
           </div>
           <div className="d-flex justify-content-end">
-            <PaginationComponent pagination={pagination!} onPageChange={handlePageChange} />
+            {pagination && <PaginationComponent pagination={pagination} onPageChange={handlePageChange} />}
           </div>
         </>
       )}
+      
+      {selectedLog && <LogDetailModal log={selectedLog} onHide={() => setSelectedLog(null)} />}
     </Container>
   );
 };

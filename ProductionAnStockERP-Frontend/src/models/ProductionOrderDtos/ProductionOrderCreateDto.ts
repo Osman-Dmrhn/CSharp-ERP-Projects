@@ -1,5 +1,5 @@
 export interface ProductionOrderCreateDto {
-  orderId?: number | null;
-  productName: string;
+  productId: number;
   quantity: number;
+  orderId?: number;
 }

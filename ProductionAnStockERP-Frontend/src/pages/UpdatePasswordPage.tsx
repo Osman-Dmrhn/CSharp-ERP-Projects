@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {updateUserPass} from '../api/UserService'; 
+import {updateUserPassword} from '../api/UserService'; 
 import type { UpdateUserPasswordDto } from '../models/UserDtos/UpdateUserPasswordDto';
 
 const UpdatePasswordPage: React.FC = () => {
@@ -28,7 +28,7 @@ const UpdatePasswordPage: React.FC = () => {
     setSuccessMessage('');
 
     try {
-      const result = await updateUserPass(formData);
+      const result = await updateUserPassword(formData);
       if (result.success) {
         setSuccessMessage('Şifreniz başarıyla güncellendi!');
         setFormData({

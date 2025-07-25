@@ -11,8 +11,8 @@ using System.Security.Claims;
 namespace ProductionAndStockERP.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "Admin,Producer")]
-    [Route("api/stocktransactions")] // Route'u çoğul yapmak daha standarttır
+    [Authorize(Roles ="Admin,Producer")]
+    [Route("api/stocktransactions")]
     public class StockTransactionController : ControllerBase
     {
         private readonly IStockTransactionService _stockTransactionService;

@@ -2,10 +2,12 @@ import type { ProductionOrderStatus } from "./ProductionOrderStatus";
 
 export interface ProductionOrder {
   productionId: number;
-  orderId: number | null;
+  productId: number;
   productName: string;
   quantity: number;
   status: ProductionOrderStatus;
-  createdBy: number;
   createdAt: string;
+  createdBy: number;
+  createdByUserName: string;
+  orderId?: number;
 }

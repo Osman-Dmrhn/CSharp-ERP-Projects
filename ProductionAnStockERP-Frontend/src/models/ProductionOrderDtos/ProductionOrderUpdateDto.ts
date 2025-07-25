@@ -1,7 +1,7 @@
 import type { ProductionOrderStatus } from "./ProductionOrderStatus";
 
 export interface ProductionOrderUpdateDto {
-  productName: string;
+  productId: number;
   quantity: number;
   status: ProductionOrderStatus;
 }

@@ -12,6 +12,8 @@ namespace ProductionAndStockERP.Helpers
             services.AddScoped<IProductionOrderService,ProductionOrderService>();
             services.AddScoped<IStockTransactionService, StockTransactionService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IReportService, ReportService>();
             return services;
         }
     }

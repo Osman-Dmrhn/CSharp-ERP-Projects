@@ -34,7 +34,8 @@ namespace ProductionAndStockERP.Controllers
             return Ok(result);
         }
 
-        [HttpGet("me")]
+
+    [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.GetUserId();

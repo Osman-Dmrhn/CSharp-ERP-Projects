@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "gnHb9tGk2tnesMrbbY9wf2FYbTbu3dItFg1/FNSuqo0mvp1HKhk1gOxoX0PvchebMSPAQKmV0gNE6PgGXbiVcA==",
+  "dgSpecHash": "Nts+rJZ97uLAkKaZAtZ2tK87AV4GwXzOFx7Tzaz+sdD5ynDx5etD8bL+UaCiXzfJ4G8t2P52vvLAILpAoqMG4g==",
   "success": true,
   "projectFilePath": "C:\\Users\\osman\\OneDrive\\Masaüstü\\github\\CSharp-ERP-Projects\\ProductionAndStockERP\\ProductionAndStockERP.csproj",
   "expectedPackageFiles": [
@@ -53,6 +53,7 @@
     "C:\\Users\\osman\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\osman\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\osman\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
+    "C:\\Users\\osman\\.nuget\\packages\\questpdf\\2025.7.0\\questpdf.2025.7.0.nupkg.sha512",
     "C:\\Users\\osman\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\osman\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\osman\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
